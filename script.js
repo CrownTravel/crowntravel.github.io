@@ -4,6 +4,25 @@ const languages = {
     es: () => import('./es_dict.js'),
 };
 
+/**
+ * @type {IDBDatabase}
+ */
+let db;
+const dbOpenReq = indexedDB.open("crown");
+dbOpenReq.onsuccess = function (ev) {
+    db = ev.target.result;
+    console.log("Banco de dados aberto.");
+};
+
+dbOpenReq.onupgradeneeded = function (ev) {
+    db = ev.target.result;
+
+    const objectStore = db.createObjectStore("users", { keyPath: "email" });
+    objectStore.createIndex("email", "email", { unique: true });
+    objectStore.createIndex("username", "name", { unique: false });
+    console.log("Banco de dados criado pela primeira vez.");
+}
+
 const translationKeys = {
     title: 'title',
     'brand-name': 'brandName',
@@ -155,6 +174,99 @@ function handleBookingSubmit(event) {
     });
 }
 
+function showLoginModal() {
+    document.querySelector("#login-dialog").showModal();
+}
+
+function showRegisterModal() {
+    document.querySelector("#register-dialog").showModal();
+}
+
+function handleLogin(email, password) {
+    const userReq = db.transaction(["users"]).objectStore("users").get(email);
+    userReq.onsuccess = (ev) => {
+        const user = userReq.result;
+        if (user === undefined) {
+            alert("Não existe um usuário com este email");
+            return;
+        }
+
+        if (user.password !== password) {
+            alert("Senha incorreta");
+            return;
+        }
+
+        localStorage.setItem("loggedUser", JSON.stringify({ email: email, password: password }));
+        document.querySelector(".auth-wrapper").remove();
+        const userWrraper = document.createElement("div");
+        userWrraper.classList.add("user-wrapper");
+        const userName = document.createElement("span");
+        userName.textContent = user.name;
+
+        const pfp = new Image();
+        pfp.src = user.picture;
+
+        userWrraper.appendChild(userName);
+        userWrraper.appendChild(pfp);
+        document.querySelector(".header-actions").appendChild(userWrraper);
+    };
+}
+
+function handleRegister(email, username, password) {
+    const objectStore = db.transaction(["users"], "readwrite").objectStore("users");
+    objectStore.get(email).onsuccess = (ev) => {
+        if (ev.target.result) {
+            alert("Já existe um usuário com este email registrado.");
+            return;
+        }
+
+        const addReq = objectStore.add({ email: email, password: password, name: username, picture: "img/default.png" });
+        addReq.onerror = (ev) => {
+            alert("Ocorreu um erro ao criar o usuário, tente novamente.");
+        }
+
+        addReq.onsuccess = (ev) => {
+            alert("Usuário criado com sucesso!");
+            handleLogin(email, password);
+        }
+    };
+}
+
+function autoLogin() {
+    if (localStorage.getItem("loggedUser")) {
+        const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+        handleLogin(loggedUser.email, loggedUser.password);
+    } else {
+        document.getElementById("login-form").addEventListener("submit", function (ev) {
+            ev.preventDefault();
+            this.parentElement.close(); // login dialog
+
+            const email = document.querySelector("#email-login").value;
+            const password = document.querySelector("#password-login").value;
+            handleLogin(email, password);
+        });
+        document.getElementById("register-form").addEventListener("submit", function (ev) {
+            ev.preventDefault();
+            this.parentElement.close(); // register dialog
+
+            const password = document.querySelector("#password-register").value;
+            const repeatedPassword = document.querySelector("#password-repeat").value;
+
+            if (password !== repeatedPassword) {
+                alert("A senha repetida deve ser igual à senha original.");
+                return;
+            }
+
+            const email = document.querySelector("#email-register").value;
+            const username = document.querySelector("#user-name").value;
+
+            handleRegister(email, username, password);
+        });
+        document.querySelector("#login-btn").addEventListener("click", showLoginModal);
+        document.querySelector("#register-btn").addEventListener("click", showRegisterModal);
+    }
+}
+
 function setInitialTranslations() {
     if (localStorage.getItem("selectedLanguage")) {
         selectLanguage(localStorage.getItem("selectedLanguage"));
@@ -175,7 +287,8 @@ window.changeBanner = changeBanner;
 
 window.addEventListener('DOMContentLoaded', () => {
     setInitialTranslations();
-    document.getElementById('booking-form').addEventListener('submit', handleBookingSubmit);
+    setTimeout(autoLogin, 500); // to wait for the db to load.
+    document.getElementById("booking-form").addEventListener("submit", handleBookingSubmit);
     document.querySelectorAll('.hero-banner').forEach((banner) => {
         banner.addEventListener('mouseenter', stopBannerRotation);
         banner.addEventListener('mouseleave', startBannerRotation);

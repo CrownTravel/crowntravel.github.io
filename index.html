@@ -27,8 +27,8 @@
                     <button class="lang-btn" type="button" onclick="selectLanguage('es')">ES</button>
                 </div>
                 <div class="auth-wrapper">
-                    <button id="login-button" class="btn-auth" data-btn-login>Login</button>
-                    <button id="register-button" class="btn-auth btn-auth-primary" data-btn-register>Register</button>
+                    <button id="login-btn" class="btn-auth" data-btn-login>Login</button>
+                    <button id="register-btn" class="btn-auth btn-auth-primary" data-btn-register>Register</button>
                 </div>
             </div>
         </div>
@@ -167,6 +167,56 @@
             <p data-footer-copyright>&copy; 2026 Crown Travel. All rights reserved.</p>
         </div>
     </footer>
+
+    <dialog id="login-dialog">
+        <h1>Entre na sua conta</h1>
+        <form id="login-form">
+            <div class="form-row">
+                <div class="from-group">
+                    <label for="email-login">Email: </label>
+                    <input id="email-login" class="form-input" required>
+                </div>
+                <div class="from-group">
+                    <label for="password-login">Senha: </label>
+                    <input id="password-login" class="form-input" type="password" required>
+                </div>
+            </div>
+            <div id="actions-wrraper">
+                <button class="cancel action">Cancelar</button>
+                <button type="submit" class="confirm action">Entrar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="register-dialog">
+        <h1>Crie uma conta</h1>
+        <form id="register-form">
+            <div class="form-row">
+                <div class="from-group">
+                    <label for="email-register">Email: </label>
+                    <input id="email-register" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-name">Nome de usuário: </label>
+                    <input id="user-name" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="from-group">
+                    <label for="password-register">Senha: </label>
+                    <input id="password-register" class="form-input" type="password" required>
+                </div>
+                <div class="from-group">
+                    <label for="password-repeat">Repita a senha: </label>
+                    <input id="password-repeat" class="form-input" type="password" required>
+                </div>
+            </div>
+            <div id="actions-wrraper">
+                <button class="cancel action">Cancelar</button>
+                <button type="submit" class="confirm action">Entrar</button>
+            </div>
+        </form>
+    </dialog>
 
     <script src="script.js" type="module"></script>
 </body>
