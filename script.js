@@ -304,7 +304,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById("navbar-expander").addEventListener("click", expandNavBar);
     document.querySelectorAll("button.cancel.action").forEach((btn) => {
         btn.addEventListener("click", function(){
-            // button > actions-wrraper > dialog
+            // button > actions-wrraper > form > dialog
             btn.parentElement.parentElement.close();
         });
     });
