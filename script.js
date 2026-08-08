@@ -305,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll("button.cancel.action").forEach((btn) => {
         btn.addEventListener("click", function(){
             // button > actions-wrraper > form > dialog
-            btn.parentElement.parentElement.close();
+            btn.parentElement.parentElement.parentElement.close();
         });
     });
     document.querySelectorAll('.hero-banner').forEach((banner) => {
