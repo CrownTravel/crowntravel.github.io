@@ -302,6 +302,12 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(autoLogin, 500); // to wait for the db to load.
     document.getElementById("booking-form").addEventListener("submit", handleBookingSubmit);
     document.getElementById("navbar-expander").addEventListener("click", expandNavBar);
+    document.querySelectorAll("button.cancel.action").forEach((btn) => {
+        btn.addEventListener("click", function(){
+            // button > actions-wrraper > dialog
+            btn.parentElement.parentElement.close();
+        });
+    });
     document.querySelectorAll('.hero-banner').forEach((banner) => {
         banner.addEventListener('mouseenter', stopBannerRotation);
         banner.addEventListener('mouseleave', startBannerRotation);
