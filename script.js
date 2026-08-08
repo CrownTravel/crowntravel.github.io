@@ -282,6 +282,18 @@ function setInitialTranslations() {
     }
 }
 
+function expandNavBar(){
+    const navbar = document.getElementById("navbar-container");
+    navbar.classList.toggle("expanded");
+
+    const expander = document.querySelector("#navbar-expander");
+    if(navbar.classList.contains("expanded")){
+        expander.textContent = "^";
+    } else{
+        expander.textContent = "v";
+    }
+}
+
 window.selectLanguage = selectLanguage;
 window.changeBanner = changeBanner;
 
@@ -289,6 +301,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setInitialTranslations();
     setTimeout(autoLogin, 500); // to wait for the db to load.
     document.getElementById("booking-form").addEventListener("submit", handleBookingSubmit);
+    document.getElementById("navbar-expander").addEventListener("click", expandNavBar);
     document.querySelectorAll('.hero-banner').forEach((banner) => {
         banner.addEventListener('mouseenter', stopBannerRotation);
         banner.addEventListener('mouseleave', startBannerRotation);

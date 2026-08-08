@@ -33,7 +33,7 @@ button, input, select {
     font: inherit;
 }
 
-.navbar {
+#navbar {
     width: 100%;
     position: sticky;
     top: 0;
@@ -43,7 +43,7 @@ button, input, select {
     z-index: 10;
 }
 
-.navbar-container {
+#navbar-container {
     max-width: 1240px;
     margin: 0 auto;
     display: flex;
@@ -462,8 +462,20 @@ select:focus {
 }
 
 @media (max-width: 900px) {
-    .nav-menu,
-    .header-actions {
+    #navbar-container.expanded {
+        flex-direction: column;
+    }
+
+    #navbar-container.expanded .header-actions {
+        flex-direction: column;
+    }
+
+    #navbar-container.expanded .nav-menu * {
+        font-size: 0.8rem;
+    }
+
+    #navbar-container:not(.expanded) .nav-menu,
+    #navbar-container:not(.expanded) .header-actions {
         display: none;
     }
 
@@ -483,9 +495,11 @@ select:focus {
 }
 
 @media (max-width: 640px) {
-    .navbar-container {
+    #navbar-container {
         flex-wrap: wrap;
         justify-content: center;
+        padding-bottom: 0;
+        gap: 0.6rem;
     }
 
     .logo-section {

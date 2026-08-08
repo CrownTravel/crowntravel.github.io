@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <header class="navbar">
-        <div class="navbar-container">
+    <header id="navbar">
+        <div id="navbar-container">
             <div class="logo-section">
                 <img src="img/logo.jpeg" alt="Crown Travel" class="logo">
                 <span class="brand-name" data-brand-name>Crown Travel</span>
@@ -31,6 +31,7 @@
                     <button id="register-btn" class="btn-auth btn-auth-primary" data-btn-register>Register</button>
                 </div>
             </div>
+            <div id="navbar-expander" class="expander">v</div>
         </div>
     </header>
 
@@ -47,9 +48,9 @@
             <button class="btn-cta" type="button" onclick="document.getElementById('book').scrollIntoView({behavior: 'smooth'})" data-btn-explore>Book Your Adventure</button>
         </div>
         <div class="banner-indicators">
-            <button class="indicator active" type="button" onclick="changeBanner(0)"></button>
-            <button class="indicator" type="button" onclick="changeBanner(1)"></button>
-            <button class="indicator" type="button" onclick="changeBanner(2)"></button>
+            <button aria-hidden="true" class="indicator active" type="button" onclick="changeBanner(0)"></button>
+            <button aria-hidden="true" class="indicator" type="button" onclick="changeBanner(1)"></button>
+            <button aria-hidden="true" class="indicator" type="button" onclick="changeBanner(2)"></button>
         </div>
     </section>
 
@@ -182,7 +183,7 @@
                 </div>
             </div>
             <div id="actions-wrraper">
-                <button class="cancel action" novalidate>Cancelar</button>
+                <button type="button" class="cancel action" novalidate>Cancelar</button>
                 <button type="submit" class="confirm action">Entrar</button>
             </div>
         </form>
@@ -212,7 +213,7 @@
                 </div>
             </div>
             <div id="actions-wrraper">
-                <button class="cancel action" novalidate>Cancelar</button>
+                <button type="button" class="cancel action" novalidate>Cancelar</button>
                 <button type="submit" class="confirm action">Entrar</button>
             </div>
         </form>
