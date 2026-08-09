@@ -38,6 +38,7 @@ button, input, select {
     position: sticky;
     top: 0;
     background: rgba(255,255,255,0.92);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     z-index: 10;
@@ -51,6 +52,10 @@ button, input, select {
     justify-content: space-between;
     padding: 1rem 1.5rem;
     gap: 1rem;
+}
+
+#navbar-expander {
+    display: none;
 }
 
 .logo-section {
@@ -159,6 +164,7 @@ dialog {
 }
 
 dialog::backdrop {
+    -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -462,11 +468,11 @@ select:focus {
 }
 
 @media (max-width: 900px) {
-    #navbar-container.expanded {
-        flex-direction: column;
+    #navbar-expander {
+        display: block;
     }
 
-    #navbar-container.expanded .header-actions {
+    #navbar-container.expanded {
         flex-direction: column;
     }
 
@@ -491,6 +497,12 @@ select:focus {
     .footer-content,
     .form-row {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 750px) {
+    #navbar-container.expanded .header-actions {
+        flex-direction: column;
     }
 }
 
