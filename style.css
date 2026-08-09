@@ -299,30 +299,75 @@ dialog h1 {
 
 .about-section,
 .booking-section,
-.prices-section {
+.prices-section,
+.itinerary-section,
+.best-time-section {
     padding: 4.5rem 1.5rem;
 }
 
 .about-container,
 .booking-container,
-.prices-container {
+.prices-container,
+.itinerary-container,
+.best-time-container {
     max-width: 1080px;
     margin: 0 auto;
 }
 
 .about-content h2,
-.booking-container h2 {
+.booking-container h2,
+.section-heading h2 {
     font-size: 2.3rem;
     margin-bottom: 1rem;
     color: var(--soft-black);
 }
 
 .about-content p,
-.booking-container p {
+.booking-container p,
+.section-heading p {
     font-size: 1.05rem;
     color: #475569;
     max-width: 720px;
     margin-bottom: 2rem;
+}
+
+.about-highlights {
+    margin: 0 0 2rem;
+    color: #0f172a;
+    font-weight: 600;
+    padding-left: 1rem;
+    border-left: 3px solid #d97706;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.about-features-list {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.about-features-list li {
+    position: relative;
+    padding-left: 1.3rem;
+    color: #334155;
+}
+
+.about-features-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    color: #d97706;
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
 .features-grid {
@@ -376,11 +421,27 @@ table {
     box-shadow: 0 20px 45px rgba(15,23,42,0.06);
 }
 
+.section-heading {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    color: #d97706;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
 .prices-card {
     background: #ffffff;
     border-radius: 24px;
     padding: 1.5rem;
     box-shadow: 0 35px 90px rgba(15,23,42,0.06);
+    margin-bottom: 1.5rem;
 }
 
 .prices-table th,
@@ -412,6 +473,140 @@ table {
     margin: 0 0 0.75rem 0;
     color: #64748b;
     font-size: 0.95rem;
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.package-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.6rem;
+    box-shadow: 0 20px 45px rgba(15,23,42,0.06);
+    border: 1px solid rgba(15,23,42,0.08);
+}
+
+.package-card-economy {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+}
+
+.package-card-luxury {
+    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+}
+
+.package-badge {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+    background: rgba(15,23,42,0.08);
+    color: var(--soft-black);
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.package-card h3 {
+    margin: 0 0 0.25rem;
+    font-size: 2rem;
+    color: var(--soft-black);
+}
+
+.package-subtitle {
+    margin: 0 0 1rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.package-card ul {
+    margin: 0 0 1rem;
+    padding-left: 1.1rem;
+    color: #475569;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.package-note {
+    margin: 0;
+    color: #334155;
+    font-weight: 600;
+}
+
+.itinerary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.itinerary-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 45px rgba(15,23,42,0.06);
+    border: 1px solid rgba(15,23,42,0.08);
+}
+
+.day-number {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    color: #d97706;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+}
+
+.itinerary-card h3 {
+    margin: 0 0 0.6rem;
+    color: var(--soft-black);
+}
+
+.itinerary-card p {
+    margin: 0;
+    color: #475569;
+}
+
+.best-time-card {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 45px rgba(15,23,42,0.06);
+}
+
+.season-block {
+    border-radius: 20px;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid rgba(15,23,42,0.08);
+}
+
+.season-block h3 {
+    margin: 0 0 0.35rem;
+    color: var(--soft-black);
+}
+
+.season-block p,
+.season-block span {
+    margin: 0;
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+.season-block span {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    color: #d97706;
+}
+
+.season-block-wide {
+    grid-column: span 1;
 }
 
 
@@ -547,7 +742,11 @@ select:focus {
         margin-bottom: 3rem;
     }
 
+    .about-grid,
     .features-grid,
+    .packages-grid,
+    .itinerary-grid,
+    .best-time-card,
     .footer-content,
     .form-row {
         grid-template-columns: 1fr;
