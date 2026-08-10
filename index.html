@@ -234,51 +234,121 @@
 
     <section class="booking-section" id="book">
         <div class="booking-container">
-            <h2 data-booking-title>Book Your Flight</h2>
-            <p data-booking-subtitle>Start your journey to Ha Long Bay today</p>
-            <form class="booking-form" id="booking-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="from" data-label-from>From</label>
-                        <input type="text" id="from" class="form-input" data-placeholder-from placeholder="Departure City" required>
+            <div class="section-heading">
+                <h2 data-booking-title>Reserve seu pacote</h2>
+                <p data-booking-subtitle>Comece sua jornada para Ha Long Bay hoje</p>
+            </div>
+
+            <div class="booking-panel">
+                <div class="booking-left">
+                    <div class="package-tiles" role="list">
+                        <article class="package-tile" role="listitem" data-package-type="economy" data-base-price="15213">
+                            <div class="tile-header">
+                                <p class="package-badge" data-economic-package>Pacote econômico</p>
+                                <h3 class="tile-price" data-economic-price>R$ 15.213,00</h3>
+                            </div>
+                            <p class="tile-desc">Hospedagem, traslado e cruzeiro com experiências essenciais.</p>
+                            <ul class="tile-includes">
+                                <li data-staying>Transporte • hospedagem • alimentação</li>
+                                <li data-includes>Passeios • guias • cruzeiro</li>
+                            </ul>
+                            <button type="button" class="btn-select-package" data-select="economy" data-select-package>Selecionar</button>
+                        </article>
+
+                        <article class="package-tile" role="listitem" data-package-type="luxury" data-base-price="24414">
+                            <div class="tile-header">
+                                <p class="package-badge" data-luxury-package>Pacote de luxo</p>
+                                <h3 class="tile-price" data-luxury-price>R$ 24.414,00</h3>
+                            </div>
+                            <p class="tile-desc">Hospedagem premium, cruzeiro exclusivo e experiências personalizadas.</p>
+                            <ul class="tile-includes">
+                                <li data-luxury-staying>Hospedagem premium • transfers VIP</li>
+                                <li data-luxury-includes>Experiências exclusivas • chef a bordo</li>
+                            </ul>
+                            <button type="button" class="btn-select-package" data-select="luxury" data-select-package>Selecionar</button>
+                        </article>
                     </div>
-                    <div class="form-group">
-                        <label for="to" data-label-to>To</label>
-                        <input type="text" id="to" class="form-input" data-placeholder-to placeholder="Ha Long Bay, Vietnam" value="Ha Long Bay" readonly disabled>
+
+                    <div class="trust-row">
+                        <span class="trust-badge">✔️ Seguro de viagem incluso</span>
+                        <span class="trust-badge">⭐ 4.9 (1.2k avaliações)</span>
+                        <a href="#contact" class="contact-link">Fale com um especialista</a>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="departure-date" data-label-departure>Departure Date</label>
-                        <input type="date" id="departure-date" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="return-date" data-label-return>Return Date</label>
-                        <input type="date" id="return-date" class="form-input">
-                    </div>
+
+                <div class="booking-right">
+                    <form class="booking-form checkout-form" id="booking-form">
+                        <!-- keep original input ids so JS remains compatible -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="from" data-label-from>De</label>
+                                <input type="text" id="from" class="form-input" data-placeholder-from placeholder="Cidade de partida" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="to" data-label-to>Para</label>
+                                <input type="text" id="to" class="form-input" data-placeholder-to placeholder="Ha Long Bay, Vietnã" value="Ha Long Bay" readonly disabled>
+                            </div>
+                        </div>
+
+                        <div class="summary-card">
+                            <h3>Seu resumo</h3>
+                            <div id="selected-package" class="selected-package">
+                                <strong class="selected-package-name" data-selected-package-none>Nenhum pacote selecionado</strong>
+                                <div class="selected-package-price" aria-hidden="true"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="departure-date" data-label-departure>Data de partida</label>
+                                    <input type="date" id="departure-date" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="return-date" data-label-return>Data de retorno</label>
+                                    <input type="date" id="return-date" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="passengers" data-label-passengers>Passageiros</label>
+                                    <select id="passengers" class="form-input">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5+</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="class" data-label-class>Classe</label>
+                                    <select id="class" class="form-input">
+                                        <option value="economy" data-option-economy>Economy</option>
+                                        <option value="premium" data-option-premium>Premium</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- hidden fields to store chosen package -->
+                            <input type="hidden" id="selected-package-type" value="">
+                            <input type="hidden" id="selected-package-price" value="0">
+
+                            <div class="price-breakdown">
+                                <div class="price-row"><span data-price-subtotal>Subtotal</span><span id="price-subtotal">—</span></div>
+                                <div class="price-row"><span data-price-taxes>Taxas (10%)</span><span id="price-taxes">—</span></div>
+                                <div class="price-row"><span data-price-service>Serviço (5%)</span><span id="price-service">—</span></div>
+                                <div class="price-row total"><strong data-price-total>Total</strong><strong id="price-total">—</strong></div>
+                            </div>
+
+                            <div class="summary-actions">
+                                <button type="submit" class="btn-submit" data-confirm-reservation>Confirmar reserva</button>
+                                <button type="button" class="btn-cta btn-contact" onclick="document.location='#contact'">Falar com especialista</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="booking-result" class="booking-result" aria-live="polite"></div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="passengers" data-label-passengers>Passengers</label>
-                        <select id="passengers" class="form-input">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5+</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="class" data-label-class>Class</label>
-                        <select id="class" class="form-input">
-                            <option value="economy" data-option-economy>Economy</option>
-                            <option value="premium" data-option-premium>Premium</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit" data-btn-search>Search Flights</button>
-            </form>
-            <div id="booking-result" class="booking-result"></div>
+            </div>
         </div>
     </section>
 
