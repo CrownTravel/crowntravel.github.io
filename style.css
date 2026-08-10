@@ -666,12 +666,54 @@ select:focus {
 
 .booking-result {
     margin-top: 1.8rem;
-    padding: 1.5rem;
+}
+
+.booking-result.success .booking-result-card,
+.booking-result.error .booking-result-card {
+    background: #ffffff;
     border-radius: 20px;
-    background: #f8fafc;
+    padding: 1.25rem;
+    box-shadow: 0 20px 45px rgba(15,23,42,0.06);
     border: 1px solid rgba(15,23,42,0.08);
     color: #334155;
 }
+
+.booking-result.error .booking-result-card {
+    border-left: 4px solid #ef4444; /* red accent for errors */
+}
+
+.booking-result .booking-result-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.6rem;
+}
+
+.booking-result .booking-status {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--soft-black);
+}
+
+.booking-result .booking-message {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.booking-result .booking-summary {
+    margin: 0.75rem 0 0 0;
+    padding-left: 1rem;
+    color: #475569;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.booking-result .booking-summary li {
+    list-style: none;
+    padding-left: 0;
+}
+
 
 .footer {
     padding: 3rem 1.5rem 2rem;

@@ -224,19 +224,41 @@ function getBookingData() {
 
 function renderBookingResult(data) {
 	const result = document.getElementById("booking-result");
-	const returnText = data.returnDate ? data.returnDate : intl.oneWay;
-	const passengerText = data.passengers === "1" ? intl.passanger : intl.passangers;
+	// sanitize simple values to avoid accidental HTML injection
+	function escapeHtml(str) {
+		if (!str && str !== 0) return "";
+		return String(str)
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	}
+
+	const returnText = data.returnDate ? escapeHtml(data.returnDate) : escapeHtml(intl.oneWay);
+	const passengerText = data.passengers === "1" ? escapeHtml(intl.passanger) : escapeHtml(intl.passangers);
+
+	// Set visual state
+	result.classList.remove("success", "error");
+	const isError = data.status === intl.incompleteDetails || data.status === intl.userCreationError;
+	result.classList.add(isError ? "error" : "success");
 
 	result.innerHTML = `
-        <strong>${data.status}</strong>
-        <p>${data.message}</p>
-        <ul>
-            <li><strong>${data.from}</strong> → <strong>${data.to}</strong></li>
-            <li>${data.departureDate} — ${returnText}</li>
-            <li>${data.passengers} ${passengerText}</li>
-            <li>${data.travelClass}</li>
-        </ul>
-    `;
+		<div class="booking-result-card">
+			<div class="booking-result-header">
+				<h3 class="booking-status">${escapeHtml(data.status)}</h3>
+				<p class="booking-message">${escapeHtml(data.message)}</p>
+			</div>
+			<div class="booking-result-body">
+				<ul class="booking-summary">
+					<li><strong>${escapeHtml(data.from)}</strong> → <strong>${escapeHtml(data.to)}</strong></li>
+					<li>${escapeHtml(data.departureDate)} — ${returnText}</li>
+					<li>${escapeHtml(data.passengers)} ${passengerText}</li>
+					<li>${escapeHtml(data.travelClass)}</li>
+				</ul>
+			</div>
+		</div>
+	`;
 }
 
 function handleBookingSubmit(event) {
