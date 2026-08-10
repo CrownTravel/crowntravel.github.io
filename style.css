@@ -658,6 +658,53 @@ table {
     font-size: 0.95rem;
 }
 
+.price-breakdown-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 35px 90px rgba(15,23,42,0.06);
+    margin-top: 1.5rem;
+}
+
+.price-breakdown-card h3 {
+    margin: 0 0 0.5rem;
+    color: var(--soft-black);
+    font-size: 1.35rem;
+}
+
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.breakdown-column {
+    background: #f8fafc;
+    border: 1px solid rgba(15,23,42,0.08);
+    border-radius: 20px;
+    padding: 1rem;
+}
+
+.breakdown-heading {
+    margin: 0 0 0.75rem;
+    color: var(--soft-black);
+    font-size: 1.05rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.price-breakdown-table {
+    width: 100%;
+    min-width: 320px;
+}
+
+.price-breakdown-table th,
+.price-breakdown-table td {
+    text-align: left;
+}
+
 .packages-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
