@@ -23,6 +23,8 @@ dbOpenReq.onupgradeneeded = function (ev) {
 	console.log("Banco de dados criado pela primeira vez.");
 };
 
+let intl;
+
 const translationKeys = {
 	title: "title",
 	"brand-name": "brandName",
@@ -72,10 +74,88 @@ const translationKeys = {
 	"footer-copyright": "footerCopyright",
 	"placeholder-from": "placeholderFrom",
 	"placeholder-to": "placeholderTo",
+	"one-way": "oneWay",
+	"correctly-repeat-password": "correctlyRepeatPassword",
+	"user-creation-success": "userCreationSuccess",
+	"user-creation-error": "userCreationError",
+	"user-already-exists": "userAlreadyExists",
+	"wrong-password": "wrongPassword",
+	"no-user": "noUser",
+	"flight-search-complete": "flightSearchComplete",
+	"booking-completed": "bookingCompleted",
+	"enter-departure-city": "enterDepartureCity",
+	"incomplete-details": "incompleteDetails",
+	"passanger": "passanger",
+	"passangers": "passangers",
+	"password": "password",
+	"repeat-password": "repeatPassword",
+	"username": "username",
+	"halong-resume": "halongResume",
+	"halong-desc1": "halongDesc1",
+	"halong-desc2": "halongDesc2",
+	"halong-desc3": "halongDesc3",
+	"halong-desc4": "halongDesc4",
+	"halong-feature-desc1": "halongFeatureDesc1",
+	"halong-feature-desc2": "halongFeatureDesc2",
+	"halong-feature-desc3": "halongFeatureDesc3",
+	"halong-feature-desc4": "halongFeatureDesc4",
+	"halong-feature-title1": "halongFeatureTitle1",
+	"halong-feature-title2": "halongFeatureTitle2",
+	"halong-feature-title3": "halongFeatureTitle3",
+	"halong-feature-title4": "halongFeatureTitle4",
+	"prices-eyebrow": "pricesEyebrow",
+	"duration": "duration",
+	"journey-data": "journeyData",
+	"package-summary": "packageSummary",
+	"prices-desc": "pricesDesc",
+	"item": "item",
+	"economic-package": "economicPackage",
+	"luxury-package": "luxuryPackage",
+	"economic-hotel": "economicHotel",
+	"luxury-hotel": "luxuryHotel",
+	"cruise": "cruise",
+	"economic-cruise": "economicCruise",
+	"luxury-cruise": "luxuryCruise",
+	"experiences": "experiences",
+	"economic-xp": "economicXp",
+	"luxury-xp": "luxuryXp",
+	"economic-price": "economicPrice",
+	"luxury-price": "luxuryPrice",
+	"full-package": "fullPackage",
+	"payment": "payment",
+	"staying": "staying",
+	"includes": "includes",
+	"economic-note": "economicNote",
+	"luxury-staying": "luxuryStaying",
+	"luxury-includes": "luxuryIncludes",
+	"luxury-note": "luxuryNote",
+	"overall-plan": "overallPlan",
+	"plan-text": "planText",
+	"plan-coverage": "planCoverage",
+	"day1": "day1",
+	"day1-desc": "day1Desc",
+	"day2": "day2",
+	"day2-desc": "day2Desc",
+	"day3": "day3",
+	"day3-desc": "day3Desc",
+	"day4": "day4",
+	"day4-desc": "day4Desc",
+	"day5": "day5",
+	"day5-desc": "day5Desc",
+	"when-to-go-eyebrow": "whenToGoEyebrow",
+	"good-climate": "goodClimate",
+	"when-to-go": "whenToGo",
+	"spring": "spring",
+	"timespan1": "timespan1",
+	"temp": "temp",
+	"fall": "fall",
+	"timespan2": "timespan2",
+	"climate-condition": "climateCondition",
+	"climate-desc": "climateDesc",
 };
 
 function selectLanguage(lang) {
-    console.log(lang);
+	console.log(lang);
 	updateDocumentLanguage(lang);
 	document.querySelectorAll(".lang-btn").forEach((button) => {
 		button.classList.toggle("active", button.textContent === lang.toUpperCase());
@@ -89,6 +169,7 @@ function updateDocumentLanguage(lang) {
 
 	loader().then((module) => {
 		const dict = module.default;
+		intl = dict;
 
 		document.querySelectorAll("[data-title]").forEach((element) => {
 			if (dict.title) element.textContent = dict.title;
@@ -143,8 +224,8 @@ function getBookingData() {
 
 function renderBookingResult(data) {
 	const result = document.getElementById("booking-result");
-	const returnText = data.returnDate ? data.returnDate : "One-way";
-	const passengerText = data.passengers === "1" ? "passenger" : "passengers";
+	const returnText = data.returnDate ? data.returnDate : intl.oneWay;
+	const passengerText = data.passengers === "1" ? intl.passanger : intl.passangers;
 
 	result.innerHTML = `
         <strong>${data.status}</strong>
@@ -164,17 +245,17 @@ function handleBookingSubmit(event) {
 
 	if (!data.from || !data.departureDate) {
 		renderBookingResult({
-			status: "Incomplete details",
-			message: "Please enter your departure city and date before searching for flights.",
+			status: intl.incompleteDetails,
+			message: intl.enterDepartureCity,
 			...data,
 		});
 		return;
 	}
 
 	renderBookingResult({
-		status: "Flight search complete",
-		message:
-			"Your Crown Travel experience begins now. This fictional itinerary is ready to inspire your next adventure.",
+		status: intl.flightSearchComplete,
+		// "Your Crown Travel experience begins now. This fictional itinerary is ready to inspire your next adventure."
+		message: intl.bookingCompleted,
 		...data,
 	});
 }
@@ -192,12 +273,12 @@ function handleLogin(email, password) {
 	userReq.onsuccess = (ev) => {
 		const user = userReq.result;
 		if (user === undefined) {
-			alert("Não existe um usuário com este email");
+			alert(intl.noUser);
 			return;
 		}
 
 		if (user.password !== password) {
-			alert("Senha incorreta");
+			alert(intl.wrongPassword);
 			return;
 		}
 
@@ -221,7 +302,7 @@ function handleRegister(email, username, password) {
 	const objectStore = db.transaction(["users"], "readwrite").objectStore("users");
 	objectStore.get(email).onsuccess = (ev) => {
 		if (ev.target.result) {
-			alert("Já existe um usuário com este email registrado.");
+			alert(intl.userAlreadyExists);
 			return;
 		}
 
@@ -232,11 +313,11 @@ function handleRegister(email, username, password) {
 			picture: "img/default.png",
 		});
 		addReq.onerror = (ev) => {
-			alert("Ocorreu um erro ao criar o usuário, tente novamente.");
+			alert(intl.userCreatingError);
 		};
 
 		addReq.onsuccess = (ev) => {
-			alert("Usuário criado com sucesso!");
+			alert(intl.userCreationSuccess);
 			handleLogin(email, password);
 		};
 	};
@@ -263,7 +344,7 @@ function autoLogin() {
 			const repeatedPassword = document.querySelector("#password-repeat").value;
 
 			if (password !== repeatedPassword) {
-				alert("A senha repetida deve ser igual à senha original.");
+				alert(intl.correctlyRepeatPassword);
 				return;
 			}
 
@@ -291,7 +372,7 @@ function setInitialTranslations() {
 			return;
 		} else if (Object.keys(languages).includes(navigator.languages[i].split("-")[0])) {
 			const lang = navigator.languages[i].split("-")[0];
-            selectLanguage(lang);
+			selectLanguage(lang);
 			localStorage.setItem("selectedLanguage", lang);
 			return;
 		}
