@@ -47,8 +47,8 @@ const es_dict = Object.freeze({
     selectPackage: "Seleccionar",
     confirmReservation: "Confirmar reserva",
     priceSubtotal: "Subtotal",
-    priceTaxes: "Impuestos (10%)",
-    priceService: "Servicio (5%)",
+    priceTaxes: "Impuestos",
+    priceService: "Servicio",
     priceTotal: "Total",
 
     enterDepartureCity: "Por favor especifica la ciudad de salida y la fecha antes de buscar vuelos.",
