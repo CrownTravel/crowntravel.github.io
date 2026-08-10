@@ -24,6 +24,9 @@ dbOpenReq.onupgradeneeded = function (ev) {
 };
 
 let intl;
+let atualLang;
+const currency = {"pt": "BRL", "en": "USD", "es": "EUR"};
+const worth = {"pt": 1, "en": 5.1, "es": 5.89}
 
 const translationKeys = {
 	title: "title",
@@ -158,8 +161,6 @@ const translationKeys = {
 	"confirm-reservation": "confirmReservation",
 	"selected-package-none": "selectedPackageNone",
 	"price-subtotal": "priceSubtotal",
-	"price-taxes": "priceTaxes",
-	"price-service": "priceService",
 	"price-total": "priceTotal",
 };
 
@@ -179,6 +180,7 @@ function updateDocumentLanguage(lang) {
 	loader().then((module) => {
 		const dict = module.default;
 		intl = dict;
+		atualLang = lang;
 
 		document.querySelectorAll("[data-title]").forEach((element) => {
 			if (dict.title) element.textContent = dict.title;
@@ -274,9 +276,9 @@ function renderBookingResult(data) {
 }
 
 // Helper: format currency using locale
-function formatCurrencyBRL(value) {
+function formatCurrency(value) {
 	try {
-		return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+		return new Intl.NumberFormat(atualLang, { style: 'currency', currency: currency[atualLang] }).format(value);
 	} catch (err) {
 		return 'R$ ' + Number(value).toFixed(2);
 	}
@@ -285,35 +287,27 @@ function formatCurrencyBRL(value) {
 function calculateTotals(basePrice, passengers) {
 	const pax = Number(passengers) || 1;
 	const subtotal = Number(basePrice) * pax;
-	const taxes = subtotal * 0.1; // 10%
-	const service = subtotal * 0.05; // 5%
-	const total = subtotal + taxes + service;
-	return { subtotal, taxes, service, total };
+	const total = subtotal;
+	return { subtotal, total };
 }
 
 function updatePriceSummary() {
-	const base = parseFloat(document.getElementById('selected-package-price')?.value || 0);
+	const base = parseFloat(document.getElementById('selected-package-price')?.value || 0) / worth[atualLang];
 	const passengers = document.getElementById('passengers')?.value || 1;
 	const subtotalEl = document.getElementById('price-subtotal');
-	const taxesEl = document.getElementById('price-taxes');
-	const serviceEl = document.getElementById('price-service');
 	const totalEl = document.getElementById('price-total');
 
-	if (!subtotalEl || !taxesEl || !serviceEl || !totalEl) return;
+	if (!subtotalEl || !totalEl) return;
 
 	if (!base || base <= 0) {
 		subtotalEl.textContent = '—';
-		taxesEl.textContent = '—';
-		serviceEl.textContent = '—';
 		totalEl.textContent = '—';
 		return;
 	}
 
-	const { subtotal, taxes, service, total } = calculateTotals(base, passengers);
-	subtotalEl.textContent = formatCurrencyBRL(subtotal);
-	taxesEl.textContent = formatCurrencyBRL(taxes);
-	serviceEl.textContent = formatCurrencyBRL(service);
-	totalEl.textContent = formatCurrencyBRL(total);
+	const { subtotal, total } = calculateTotals(base, passengers);
+	subtotalEl.textContent = formatCurrency(subtotal);
+	totalEl.textContent = formatCurrency(total);
 }
 
 function selectPackage(type) {
@@ -370,7 +364,7 @@ function handleBookingSubmit(event) {
 
 	// compute totals and show confirmation summary
 	const totals = calculateTotals(Number(data.packagePrice), Number(data.passengers));
-	const formattedTotal = formatCurrencyBRL(totals.total);
+	const formattedTotal = formatCurrency(totals.total);
 
 	renderBookingResult({
 		status: intl.flightSearchComplete,
