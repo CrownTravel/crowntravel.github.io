@@ -1033,6 +1033,11 @@ select:focus {
     #navbar-container.expanded .header-actions {
         flex-direction: column;
     }
+
+    .breakdown-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
 }
 
 @media (max-width: 640px) {
