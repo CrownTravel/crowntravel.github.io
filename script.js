@@ -152,6 +152,15 @@ const translationKeys = {
 	"timespan2": "timespan2",
 	"climate-condition": "climateCondition",
 	"climate-desc": "climateDesc",
+
+	/* custom booking section translations */
+	"select-package": "selectPackage",
+	"confirm-reservation": "confirmReservation",
+	"selected-package-none": "selectedPackageNone",
+	"price-subtotal": "priceSubtotal",
+	"price-taxes": "priceTaxes",
+	"price-service": "priceService",
+	"price-total": "priceTotal",
 };
 
 function selectLanguage(lang) {
@@ -344,7 +353,7 @@ function handleBookingSubmit(event) {
 	if (!data.packageType || !data.packagePrice || data.packagePrice <= 0) {
 		renderBookingResult({
 			status: intl.incompleteDetails,
-			message: 'Por favor selecione um pacote antes de confirmar a reserva.',
+			message: intl.selectPackageRequired,
 			...data,
 		});
 		return;
@@ -365,7 +374,7 @@ function handleBookingSubmit(event) {
 
 	renderBookingResult({
 		status: intl.flightSearchComplete,
-		message: `Reserva recebida — total ${formattedTotal}. A equipe da Crown Travel entrará em contato para finalizar os detalhes.`,
+		message: intl.reservationReceived ? intl.reservationReceived.replace('{total}', formattedTotal) : `Reservation received — total ${formattedTotal}`,
 		...data,
 		total: formattedTotal,
 	});

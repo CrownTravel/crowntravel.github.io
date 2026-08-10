@@ -252,7 +252,7 @@
                                 <li data-staying>Transporte • hospedagem • alimentação</li>
                                 <li data-includes>Passeios • guias • cruzeiro</li>
                             </ul>
-                            <button type="button" class="btn-select-package" data-select="economy">Selecionar</button>
+                            <button type="button" class="btn-select-package" data-select="economy" data-select-package>Selecionar</button>
                         </article>
 
                         <article class="package-tile" role="listitem" data-package-type="luxury" data-base-price="24414">
@@ -265,7 +265,7 @@
                                 <li data-luxury-staying>Hospedagem premium • transfers VIP</li>
                                 <li data-luxury-includes>Experiências exclusivas • chef a bordo</li>
                             </ul>
-                            <button type="button" class="btn-select-package" data-select="luxury">Selecionar</button>
+                            <button type="button" class="btn-select-package" data-select="luxury" data-select-package>Selecionar</button>
                         </article>
                     </div>
 
@@ -293,7 +293,7 @@
                         <div class="summary-card">
                             <h3>Seu resumo</h3>
                             <div id="selected-package" class="selected-package">
-                                <strong class="selected-package-name">Nenhum pacote selecionado</strong>
+                                <strong class="selected-package-name" data-selected-package-none>Nenhum pacote selecionado</strong>
                                 <div class="selected-package-price" aria-hidden="true"></div>
                             </div>
 
@@ -333,14 +333,14 @@
                             <input type="hidden" id="selected-package-price" value="0">
 
                             <div class="price-breakdown">
-                                <div class="price-row"><span>Subtotal</span><span id="price-subtotal">—</span></div>
-                                <div class="price-row"><span>Taxas (10%)</span><span id="price-taxes">—</span></div>
-                                <div class="price-row"><span>Serviço (5%)</span><span id="price-service">—</span></div>
-                                <div class="price-row total"><strong>Total</strong><strong id="price-total">—</strong></div>
+                                <div class="price-row"><span data-price-subtotal>Subtotal</span><span id="price-subtotal">—</span></div>
+                                <div class="price-row"><span data-price-taxes>Taxas (10%)</span><span id="price-taxes">—</span></div>
+                                <div class="price-row"><span data-price-service>Serviço (5%)</span><span id="price-service">—</span></div>
+                                <div class="price-row total"><strong data-price-total>Total</strong><strong id="price-total">—</strong></div>
                             </div>
 
                             <div class="summary-actions">
-                                <button type="submit" class="btn-submit">Confirmar reserva</button>
+                                <button type="submit" class="btn-submit" data-confirm-reservation>Confirmar reserva</button>
                                 <button type="button" class="btn-cta btn-contact" onclick="document.location='#contact'">Falar com especialista</button>
                             </div>
                         </div>
