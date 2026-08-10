@@ -75,7 +75,7 @@ const es_dict = Object.freeze({
     duration: "Bahía de Ha Long en 5 días / 4 noches",
     journeyData: "Un viaje completo que incluye traslados desde el aeropuerto, alojamiento, crucero, excursiones y guías, con opciones económicas o de lujo.",
     packageSummary: "Resumen de los paquetes",
-    pricesDesc: "Precios por persona en Reales Brasileños (BRL), con una experiencia completa desde la llegada al aeropuerto hasta el regreso.",
+    pricesDesc: "Precios por persona en Euros (EUR), con una experiencia completa desde la llegada al aeropuerto hasta el regreso.",
     item: "Artículo",
     economicPackage: "Paquete económico",
     luxuryPackage: "Paquete de lujo",

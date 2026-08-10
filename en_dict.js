@@ -77,7 +77,7 @@ const en_dict = Object.freeze({
     duration: "Ha Long Bay in 5 days / 4 nights",
     journeyData: "A complete journey including airport transfers, accommodation, cruise, tours, and guides, with budget or luxury options.",
     packageSummary: "Package summary",
-    pricesDesc: "Values per person in Brazilian Reais (BRL), with a full experience from airport arrival to return.",
+    pricesDesc: "Values per person in United States Dolar (USD), with a full experience from airport arrival to return.",
     item: "Item",
     economicPackage: "Budget package",
     luxuryPackage: "Luxury package",
