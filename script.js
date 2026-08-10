@@ -219,7 +219,9 @@ function getBookingData() {
 	const returnDate = document.getElementById("return-date").value;
 	const passengers = document.getElementById("passengers").value;
 	const travelClass = document.getElementById("class").selectedOptions[0].text;
-	return { from, to, departureDate, returnDate, passengers, travelClass };
+	const packageType = document.getElementById("selected-package-type") ? document.getElementById("selected-package-type").value : "";
+	const packagePrice = document.getElementById("selected-package-price") ? parseFloat(document.getElementById("selected-package-price").value) : 0;
+	return { from, to, departureDate, returnDate, passengers, travelClass, packageType, packagePrice };
 }
 
 function renderBookingResult(data) {
@@ -255,15 +257,98 @@ function renderBookingResult(data) {
 					<li>${escapeHtml(data.departureDate)} — ${returnText}</li>
 					<li>${escapeHtml(data.passengers)} ${passengerText}</li>
 					<li>${escapeHtml(data.travelClass)}</li>
+					${data.total ? `<li><strong>Total:</strong> ${escapeHtml(data.total)}</li>` : ""}
 				</ul>
 			</div>
 		</div>
 	`;
 }
 
+// Helper: format currency using locale
+function formatCurrencyBRL(value) {
+	try {
+		return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+	} catch (err) {
+		return 'R$ ' + Number(value).toFixed(2);
+	}
+}
+
+function calculateTotals(basePrice, passengers) {
+	const pax = Number(passengers) || 1;
+	const subtotal = Number(basePrice) * pax;
+	const taxes = subtotal * 0.1; // 10%
+	const service = subtotal * 0.05; // 5%
+	const total = subtotal + taxes + service;
+	return { subtotal, taxes, service, total };
+}
+
+function updatePriceSummary() {
+	const base = parseFloat(document.getElementById('selected-package-price')?.value || 0);
+	const passengers = document.getElementById('passengers')?.value || 1;
+	const subtotalEl = document.getElementById('price-subtotal');
+	const taxesEl = document.getElementById('price-taxes');
+	const serviceEl = document.getElementById('price-service');
+	const totalEl = document.getElementById('price-total');
+
+	if (!subtotalEl || !taxesEl || !serviceEl || !totalEl) return;
+
+	if (!base || base <= 0) {
+		subtotalEl.textContent = '—';
+		taxesEl.textContent = '—';
+		serviceEl.textContent = '—';
+		totalEl.textContent = '—';
+		return;
+	}
+
+	const { subtotal, taxes, service, total } = calculateTotals(base, passengers);
+	subtotalEl.textContent = formatCurrencyBRL(subtotal);
+	taxesEl.textContent = formatCurrencyBRL(taxes);
+	serviceEl.textContent = formatCurrencyBRL(service);
+	totalEl.textContent = formatCurrencyBRL(total);
+}
+
+function selectPackage(type) {
+	const tiles = document.querySelectorAll('.package-tile');
+	tiles.forEach((t) => t.classList.toggle('selected', t.dataset.packageType === type));
+	const selected = document.querySelector(`.package-tile[data-package-type="${type}"]`);
+	if (!selected) return;
+	const name = selected.querySelector('.package-badge')?.textContent || type;
+	const displayPrice = selected.querySelector('.tile-price')?.textContent || '';
+	const basePrice = Number(selected.dataset.basePrice) || 0;
+	document.getElementById('selected-package-type').value = type;
+	document.getElementById('selected-package-price').value = basePrice;
+	document.querySelector('#selected-package .selected-package-name').textContent = name;
+	document.querySelector('#selected-package .selected-package-price').textContent = displayPrice;
+	updatePriceSummary();
+}
+
+function attachPackageListeners() {
+	document.querySelectorAll('.btn-select-package').forEach((btn) => {
+		btn.addEventListener('click', () => selectPackage(btn.closest('.package-tile').dataset.packageType));
+	});
+}
+
+function initCheckoutInteractions() {
+	attachPackageListeners();
+	document.getElementById('passengers')?.addEventListener('change', updatePriceSummary);
+	document.getElementById('class')?.addEventListener('change', updatePriceSummary);
+	// initial summary update in case user has preselection
+	updatePriceSummary();
+}
+
 function handleBookingSubmit(event) {
 	event.preventDefault();
 	const data = getBookingData();
+
+	// require selected package
+	if (!data.packageType || !data.packagePrice || data.packagePrice <= 0) {
+		renderBookingResult({
+			status: intl.incompleteDetails,
+			message: 'Por favor selecione um pacote antes de confirmar a reserva.',
+			...data,
+		});
+		return;
+	}
 
 	if (!data.from || !data.departureDate) {
 		renderBookingResult({
@@ -274,11 +359,15 @@ function handleBookingSubmit(event) {
 		return;
 	}
 
+	// compute totals and show confirmation summary
+	const totals = calculateTotals(Number(data.packagePrice), Number(data.passengers));
+	const formattedTotal = formatCurrencyBRL(totals.total);
+
 	renderBookingResult({
 		status: intl.flightSearchComplete,
-		// "Your Crown Travel experience begins now. This fictional itinerary is ready to inspire your next adventure."
-		message: intl.bookingCompleted,
+		message: `Reserva recebida — total ${formattedTotal}. A equipe da Crown Travel entrará em contato para finalizar os detalhes.`,
 		...data,
+		total: formattedTotal,
 	});
 }
 
@@ -431,5 +520,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		banner.addEventListener("mouseenter", stopBannerRotation);
 		banner.addEventListener("mouseleave", startBannerRotation);
 	});
+	// initialize booking interactions
+	initCheckoutInteractions();
 	startBannerRotation();
 });
